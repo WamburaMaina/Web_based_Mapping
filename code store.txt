@@ -1,0 +1,43 @@
+color brewer code 
+
+['#ffffd4','#fed98e','#fe9929','#d95f0e','#993404']
+
+python local server 
+python -m http.server --bind 127.0.0.1 8083
+
+
+
+
+old .js file
+const map = L.map('map').setView([-0.1, 36.5], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Replace 'your_data.geojson' with the correct relative or absolute path to your GeoJSON file
+$.getJSON("kenya_rainfall.geojson", function (data) {
+    console.log("GeoJSON data loaded:", data); // Move this line outside the block
+    const vectorLayer = L.geoJSON(data, {
+        onEachFeature: function (feature, layer) {
+            const popupContent = `
+                <p><strong>${feature.properties.name}</strong></p>
+                <p>Temperature: ${feature.properties.temperature} °C</p>
+                <p>Rainfall: ${feature.properties.rainfall} mm</p>
+            `;
+            layer.bindPopup(popupContent);
+        }
+    }).addTo(map);
+});
+
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = `
+        <p>Legend:</p>
+        <p><span class="dot" style="background:#ff0000;"></span> Temperature</p>
+        <p><span class="dot" style="background:#0000ff;"></span> Rainfall</p>
+    `;
+    return div;
+};
+legend.addTo(map);
