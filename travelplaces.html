@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Travel Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+    #map {
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+ 
+  var map = L.map('map');
+
+  
+  var giraffeCenter = L.marker([-1.3896, 36.7468]);
+  var kicc = L.marker([-1.286389, 36.817223]);
+  var twoRiversMall = L.marker([-1.1703, 36.9277]);
+
+  var path = L.polyline([
+    giraffeCenter.getLatLng(),
+    kicc.getLatLng(),
+    twoRiversMall.getLatLng()
+  ], {color: 'blue'});
+
+  
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Adding the  markers and path to map
+  L.layerGroup([giraffeCenter, kicc, twoRiversMall, path]).addTo(map);
+
+  // using bounds to fit map
+  var bounds = L.latLngBounds([giraffeCenter.getLatLng(), kicc.getLatLng(), twoRiversMall.getLatLng()]);
+  map.fitBounds(bounds);
+
+  // Adding popups to markers
+  giraffeCenter.bindPopup('<b>Giraffe Center</b>').openPopup();
+  kicc.bindPopup('<b>KICC</b>').openPopup();
+  twoRiversMall.bindPopup('<b>Two Rivers Mall</b>').openPopup();
+
+  // Adding the legend
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML += '<strong>Legend</strong><br>';
+    div.innerHTML += '<i class="fas fa-map-marker-alt" style="color:red;"></i> Giraffe Center<br>';
+    div.innerHTML += '<i class="fas fa-map-marker-alt" style="color:blue;"></i> KICC<br>';
+    div.innerHTML += '<i class="fas fa-map-marker-alt" style="color:green;"></i> Two Rivers Mall<br>';
+    div.innerHTML += '<i class="fas fa-route" style="color:blue;"></i> Travel Path<br>';
+    return div;
+  };
+
+  legend.addTo(map);
+</script>
+
+</body>
+</html>
