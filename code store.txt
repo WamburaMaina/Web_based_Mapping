@@ -1,0 +1,59 @@
+old code exercise 1
+
+let map = L.map("map", {
+  center: [-1.3139, 36.8421],
+  zoom: 15,
+});
+
+let osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; OpenStreetMap"
+}).addTo(map);
+
+let esriImagery = L.tileLayer(
+  "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  {
+    attribution: `Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS,
+      AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community`
+  }
+);
+
+let baseMaps = {
+  "OpenStreetMap": osm,
+  "ESRI World Imagery": esriImagery
+};
+
+let hospitals;
+
+fetch("hospital_edit.geojson")
+  .then(response => response.json())
+  .then(data => {
+    hospitals = L.geoJSON(data, {
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(feature.properties.name);
+      }
+    }).addTo(map);
+  });
+
+L.control.layers(baseMaps).addTo(map);
+
+
+
+old code html exer 1
+
+!DOCTYPE html> 
+<html lang="en"> 
+  <head> 
+    <meta charset="UTF-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <title>GeoJSON</title> 
+    <link rel="stylesheet" href="style.css" /> 
+    <link rel="stylesheet" href="leaflet.css" /> 
+    <script src="leaflet.js"></script> 
+  </head> 
+  <body> 
+    <div id="map"></div> 
+    <script src="main.js" type="application/javascript"></script> 
+  </body> 
+</html> 
+
+
