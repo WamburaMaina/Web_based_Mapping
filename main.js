@@ -1,4 +1,4 @@
-// Check if Leaflet is defined
+
 if (typeof L !== 'undefined') {
   // Initialize the map
   var map = L.map('map').setView([0, 0], 2);
@@ -16,7 +16,7 @@ if (typeof L !== 'undefined') {
     attribution: '© CartoDB'
   });
 
-  // Create a legend
+  
  // Create a legend
 var legend = L.control({ position: 'bottomright' });
 
@@ -51,12 +51,12 @@ legend.addTo(map);
             // Create a marker with a popup
             var marker = L.marker([lat, lon]).addTo(map);
             
-            // Customize the marker based on earthquake magnitude or other data
+            // Customize the marker 
             var magnitude = event.properties.mag;
             var color = getMarkerColor(magnitude);
             marker.setIcon(L.divIcon({ className: 'custom-marker', html: `<div style="background-color: ${color};">${magnitude}</div>` }));
             
-            // Create a popup with additional information
+            // Create a popup 
             var popupContent = `<strong>${event.properties.place}</strong><br/>Magnitude: ${magnitude}`;
             marker.bindPopup(popupContent);
           } else {
@@ -72,9 +72,9 @@ legend.addTo(map);
   console.error('Leaflet library not loaded.');
 }
 
-// Function to determine marker color based on magnitude
+
 function getMarkerColor(magnitude) {
-  // Customize this function to define color based on your requirements
+  
   if (magnitude < 3) {
     return '#00ff00'; // Green
   } else if (magnitude < 5) {
